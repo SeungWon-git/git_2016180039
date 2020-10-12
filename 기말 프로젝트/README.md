@@ -4,7 +4,7 @@
 ![리듬세상](https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F2167355058D28A3E29 "리듬세상")   
 ![가짜사나이UDT](https://i.ytimg.com/vi/Kb3ryVickFY/maxresdefault.jpg "가짜사나이 무싸트")   
 
->- ![image](https://user-images.githubusercontent.com/70631485/95734772-dada6f00-0cbe-11eb-8f81-e7c01c88c0ca.png)
+![image](https://user-images.githubusercontent.com/70631485/95734772-dada6f00-0cbe-11eb-8f81-e7c01c88c0ca.png)
    
 >- 게임의 목적,방법: 리듬게임의 모방게임인데 요즘 제가 즐겨봤던 유튜브 영상인 가짜사나이와 무싸트를 접목시킨 게임입니다. 따라서 이 게임은 무싸트 훈련을 받게된 플레이어가 조교들의 구령에 맞춰 동작을 정확히 맞추어 마지막 훈련까지 체력을 남겨 무싸트 훈련과정을 수료하는것이 목표입니다. 
 
