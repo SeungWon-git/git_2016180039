@@ -4,7 +4,7 @@
 ![리듬세상](https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F2167355058D28A3E29 "리듬세상")   
 ![가짜사나이UDT](https://i.ytimg.com/vi/Kb3ryVickFY/maxresdefault.jpg "가짜사나이 무싸트")   
 
-![image](https://user-images.githubusercontent.com/70631485/95734772-dada6f00-0cbe-11eb-8f81-e7c01c88c0ca.png)
+> ![image](https://user-images.githubusercontent.com/70631485/95734772-dada6f00-0cbe-11eb-8f81-e7c01c88c0ca.png)
    
 >- 게임의 목적,방법: 리듬게임의 모방게임인데 요즘 제가 즐겨봤던 유튜브 영상인 가짜사나이와 무싸트를 접목시킨 게임입니다. 따라서 이 게임은 무싸트 훈련을 받게된 플레이어가 조교들의 구령에 맞춰 동작을 정확히 맞추어 마지막 훈련까지 체력을 남겨 무싸트 훈련과정을 수료하는것이 목표입니다. 
 
@@ -20,7 +20,26 @@
   - 게임 클리어 (+점수판)   
   **총 9개씬**   
   
-# 3. 각 GameState 별 다음 항목
+# 3. 게임 흐름
+- 메인화면
+
+![image](https://user-images.githubusercontent.com/70631485/95739450-d796b180-0cc5-11eb-867b-0734b2e1b8d8.png)
+- 조교시범 관람
+
+![image](https://user-images.githubusercontent.com/70631485/95734783-de6df600-0cbe-11eb-82ac-030ea9933b1e.png)
+- 연습게임 3번 (후에 바로 같은 방식으로 본 게임)
+
+![image](https://user-images.githubusercontent.com/70631485/95734800-e3cb4080-0cbe-11eb-870b-deb40e8d9817.png)
+- 실수 패널티 (얼차려)
+
+![image](https://user-images.githubusercontent.com/70631485/95734813-e75ec780-0cbe-11eb-8d88-cbe8cdfce101.png)
+- 게임오버
+
+![image](https://user-images.githubusercontent.com/70631485/95734891-0d846780-0cbf-11eb-8415-90552b9e09ec.png)
+- 요약
+
+![image](https://user-images.githubusercontent.com/70631485/95738864-e03ab800-0cc4-11eb-9767-b8733d70d25f.png)
+# 4. 각 GameState 별 다음 항목
 - 메인화면: 게임 메인화면이다.  
 > 게임로고와 사진이 합쳐진 배경 1장   
 > >[엔터키, esc키]  
@@ -58,9 +77,12 @@
 > >엔터  
 > >=> 엔터시 다시 메인화면으로 전환   
 
-# 4.필요할 기술
+# 5. 필요할 기술
   - 이전 수업에서 잠깐 배웠던 시간을 정확히 다루기   
   - 게임 사운드 넣기   
   - 구보시 게임 백그라운드 움직이기
   - ***무엇보다도 리듬게임을 만들예정이다보니게임 입력시간과 출력시간의 반응속도가 가장 중요할것 같아서 이것을 어떻게하면 가장 효과적으로 구현할수있는지 배우고 싶습니다.*** 
   
+# 6. 개발범위&일정
+![image](https://user-images.githubusercontent.com/70631485/95734709-c8603580-0cbe-11eb-873b-6a7a11fcb156.png)
+![image](https://user-images.githubusercontent.com/70631485/95734734-d0b87080-0cbe-11eb-96ef-b6502cdf08f6.png)
