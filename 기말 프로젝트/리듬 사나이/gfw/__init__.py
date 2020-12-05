@@ -1,7 +1,6 @@
 # version 2020-0927
 import time
 from pico2d import *
-import random
 import gfw.world
 import gfw.image
 import gfw.font

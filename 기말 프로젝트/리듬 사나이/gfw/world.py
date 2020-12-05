@@ -1,7 +1,6 @@
 import pickle
 from functools import reduce
 import gfw
-from pico2d import *
 
 objects = []
 trashcan = []

@@ -16,6 +16,7 @@ def draw():
     image.clip_draw_to_origin(0, 0, 1495, 1121, -50, 0, 900, 600)
 
 def handle_event(e):
+    global a
     if e.type == SDL_QUIT:
         gfw.quit()
     elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
@@ -23,7 +24,6 @@ def handle_event(e):
     elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_RETURN):
         music.stop()
         gfw.push(game_state)
-
 
 def exit():
     global image,music
