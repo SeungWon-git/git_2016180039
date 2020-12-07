@@ -56,21 +56,21 @@ def run(start_state):
 
     close_canvas()
 
-def change(state):
+def change(state,stage,health):
     global stack
     if (len(stack) > 0):
         stack.pop().exit()
     stack.append(state)
-    state.enter()
+    state.enter(stage,health)
 
-def push(state):
+def push(state,stage,health):
     global stack
     if (len(stack) > 0):
         stack[-1].pause()
     stack.append(state)
-    state.enter()
+    state.enter(stage,health)
 
-def pop():
+def pop(health):
     global stack
     size = len(stack)
     if size == 1:
@@ -79,10 +79,10 @@ def pop():
         # execute the current state's exit function
         stack[-1].exit()
         # remove the current state
-        stack.pop()
+        stack.pop() #제일 위에 스택 pop()
 
         # execute resume function of the previous state
-        stack[-1].resume()
+        stack[-1].resume(health)
 
 def run_main():
     import sys

@@ -54,6 +54,7 @@ def clear_at(layer_index):
 def update():
     for obj in all_objects():
         obj.update()
+
     if len(trashcan) > 0:
         empty_trashcan()
     # counts = list(map(len, objects))

@@ -21,13 +21,13 @@ class Stage1:
         self.intro_x, self.intro_y = -400, 250
         self.intro_size = 250
 
-        global whistle_num, progress, intro, practice, correct, time, key, goal, p_key, punishment,\
-            me_shout_time, speed, check, shout_randidx, last_speak, ask_, m_intro, time_, answer_time, speed_check
-        intro = False
-        practice = False
+        global whistle_num, progress, intro, practice, correct, time, key, goal, p_key, punishment, last_speak_time,\
+            me_shout_time, speed, check, shout_randidx, last_speak, ask_, m_intro, time_, answer_time, speed_check, last_speak_num
+        intro = True
+        practice = True
         m_intro = False # False로 해놔야지 인트로 훈련에서도 타이밍 체크함
         punishment = False
-        whistle_num = 0
+        whistle_num = 5
         progress = 0
         correct = True
         time = 10
@@ -43,6 +43,8 @@ class Stage1:
         time_ = get_time()
         answer_time = -1
         speed_check = False
+        last_speak_time = 0
+        last_speak_num = 0
 
         #대사 이미지
         global intro_player, intro_friend, intro_trainer, trainer_dem, intro_dialog, m_intro_dialog,\
@@ -120,13 +122,25 @@ class Stage1:
         print("Stage1 resumed\nprogress: ",progress)
 
     def exit(self):
+        #대사 이미지
         global intro_player, intro_friend, intro_trainer, trainer_dem, intro_dialog, m_intro_dialog, \
-            pt, pt_sorry, pt_angry, trainer, whistle, shout, number, qwer, me, Ack, speak, bell, me_shout, me_key, \
-            intro_music, main_music, BBick1, BBick2, BBick_w, BBick_p
+            p_dialog, again_dialog, warnagain_dialog, comeback1_dialog, comeback2_dialog
+        # 이미지
+        global pt, pt_sorry, pt_angry, trainer, whistle, shout, number, \
+            qwer, me, Ack, speak, bell, me_shout, me_key, \
+            pushup_img, healthbar_red, healthbar_blue, lungs, sweet
+        # 배경음악
+        global intro_music, main_music, punishment_music
+        # 효과음
+        global BBick1, BBick2, BBick_w, BBick_p
         del intro_player, intro_friend, intro_trainer, trainer_dem, intro_dialog, m_intro_dialog, \
-            pt, pt_sorry, pt_angry, trainer, whistle, shout, number, qwer, me, Ack, speak, bell, me_shout, me_key
-        del intro_music, main_music, BBick1, BBick2, BBick_w, BBick_p
-        print('stage1 deleted')
+            p_dialog, again_dialog, warnagain_dialog, comeback1_dialog, comeback2_dialog
+        del pt, pt_sorry, pt_angry, trainer, whistle, shout, number, \
+            qwer, me, Ack, speak, bell, me_shout, me_key, \
+            pushup_img, healthbar_red, healthbar_blue, lungs, sweet
+        del intro_music, main_music, punishment_music
+        del  BBick1, BBick2, BBick_w, BBick_p
+        print('Stage1 deleted')
 
     def update(self):
         global time, frame, frame_, speed, check, correct, p_key, key, practice,\
@@ -139,7 +153,7 @@ class Stage1:
             frame = int(time * speed) % 10
             frame = 1800 - frame * 200
 
-        if frame == 1800 and round(frame_ - int(frame_),2) == 0.9 and progress != 0 and not intro and not punishment:
+        if frame == 1800 and round(frame_ - int(frame_),2) == 0.9 and progress != 0 and not intro and not punishment and not last_speak:
             self.Correct_Check() # 너무 늦게 클릭 확인
 
         if frame == 600 and round(frame_ - int(frame_),2) == 0.1 and progress != 0:
@@ -156,7 +170,7 @@ class Stage1:
             speed_check = False
 
         #얼차려시작
-        if whistle_num == 0 and punishment == False:
+        if whistle_num == 0 and punishment == False and not last_speak: #마지막에 호루라기 하나 남기고 호령을 했다면 그냥 얼차려말고 다시시작을 하게한다.(이게 더한 체벌이니까...ㅎ)
             BBick_p.play()
             punishment = True
             p_time = 0
@@ -172,7 +186,7 @@ class Stage1:
             correct = True
             p_key = 0
             key = -1
-
+        #얼차려 타임 업데이트
         if punishment == True:
             p_time += gfw.delta_time
             p_frame_ = round(p_time * 3,1)
@@ -192,22 +206,7 @@ class Stage1:
 
         # 종료 -> 초기화
         if progress == goal + 1 and not punishment:
-            if last_speak == True and intro == False and practice == False: #마지막 구호 말했을때
-                if goal < 20:
-                    goal += 5   #처음부터 +5만큼 다시하기
-                elif goal < 40:
-                    goal += 10
-                else:   # goal == 40일때 마지막구호 생략X(3번 연속 마지막구호 생략X) -> 게임 오버
-                    self.health = 0
-
-                count1 = 0
-                count2 = 0
-                progress = 0
-                time = 0
-                speed = 4
-                whistle_num = 5
-                last_speak = False
-            elif intro == False and practice == True: #연습끝
+            if intro == False and practice == True: #연습끝
                 practice = False
                 progress = 0
                 goal = 15
@@ -218,7 +217,7 @@ class Stage1:
                 whistle_num = 5
                 time_ = get_time()
                 m_intro = True
-            else: #스테이지1 클리어
+            elif not last_speak: #스테이지1 클리어
                 print("Stage1 Clear!\nhealth: ",self.health)
                 main_music.stop()
                 self.success = True
@@ -228,7 +227,8 @@ class Stage1:
         global intro, time, frame, count1, count2, count_up, answer ,ask, key, last_time, progress, speed,\
             goal, practice , me_shout_time, me_shout_randidx, check, last_speak, whistle_num, p_key, correct,\
             time_, m_intro, ask_, answer_time,\
-            punishment, p_time, p_first_ignore, p_count, comeback, comeback_time
+            punishment, p_time, p_first_ignore, p_count, comeback, comeback_time,\
+            last_speak_time, last_speak_num
 
         #얼차려
         if punishment == True:
@@ -373,7 +373,6 @@ class Stage1:
                     punishment = False
                     last_speak = False
                     speed = 4
-
 
         #intro
         elif intro is True:
@@ -627,7 +626,7 @@ class Stage1:
                 time = 0
                 last_speak = False
         #game start
-        else:
+        elif not last_speak:
             if frame == 200:  # 키 입력 제시
                 self.RandomKey()
 
@@ -667,6 +666,66 @@ class Stage1:
 
             for i in range(whistle_num):
                 whistle.clip_draw_to_origin(0, 0, 100, 100, 350, 130 + i*40, 50, 50)
+        #마지막 구령 말할시
+        else:
+            if last_speak_time == 0 and last_speak_num != 3:
+                last_speak_time = get_time()
+                main_music.stop()
+                punishment_music.play()
+            elif get_time() - last_speak_time < 5 and last_speak_num != 3:
+                pt_sorry.clip_draw_to_origin(0, 1000, 200, 200, 50, 235, 250, 250)
+
+                pt_angry.clip_draw_to_origin(0, 1000, 200, 200, 50 + 132, 235, 250, 250)
+                pt_angry.clip_draw_to_origin(0, 1000, 200, 200, 50 + 300, 255, 250, 250)
+                pt_angry.clip_draw_to_origin(0, 1000, 200, 200, 50 + 300 + 132, 255, 250, 250)
+
+                trainer.clip_draw_to_origin(400, 0, 200, 200, 142, 100, 316, 316)
+                if last_speak_num == 0:
+                    warnagain_dialog[0].clip_draw_to_origin(0, 0, 1371, 487, 350, 300, 430, 150)
+                elif last_speak_num == 1:
+                    warnagain_dialog[1].clip_draw_to_origin(0, 0, 1371, 487, 350, 300, 430, 150)
+                elif last_speak_num == 2:
+                    warnagain_dialog[2].clip_draw_to_origin(0, 0, 1371, 487, 350, 300, 430, 150)
+            elif get_time() - last_speak_time < 10 and last_speak_num != 3:
+                pt_sorry.clip_draw_to_origin(0, 1000, 200, 200, 50, 235, 250, 250)
+
+                pt_angry.clip_draw_to_origin(0, 1000, 200, 200, 50 + 132, 235, 250, 250)
+                pt_angry.clip_draw_to_origin(0, 1000, 200, 200, 50 + 300, 255, 250, 250)
+                pt_angry.clip_draw_to_origin(0, 1000, 200, 200, 50 + 300 + 132, 255, 250, 250)
+
+                trainer.clip_draw_to_origin(400, 0, 200, 200, 142, 100, 316, 316)
+                if last_speak_num == 0:
+                    again_dialog[0].clip_draw_to_origin(0, 0, 1371, 487, 350, 300, 430, 150)
+                elif last_speak_num == 1:
+                    again_dialog[1].clip_draw_to_origin(0, 0, 1371, 487, 350, 300, 430, 150)
+                elif last_speak_num == 2:
+                    again_dialog[2].clip_draw_to_origin(0, 0, 1371, 487, 350, 300, 430, 150)
+            #다시 시작을 위한 초기화
+            else:
+                punishment_music.stop()
+                main_music.repeat_play()
+
+                if last_speak_num == 0:
+                    goal = 20  # 처음부터 +5만큼 다시하기
+                    last_speak_num += 1
+                elif last_speak_num == 1:
+                    goal = 30   #처음부터 +10만큼 다시하기
+                    last_speak_num += 1
+                elif last_speak_num == 2:
+                    goal = 40   #처음부터 +10만큼 다시하기
+                    last_speak_num += 1
+                else:   # goal == 40일때 마지막구호 생략X(3번 연속 마지막구호 생략X) -> 게임 오버
+                    self.health = 0
+                    last_speak_num += 1
+
+                count1 = 0
+                count2 = 0
+                progress = 0
+                time = 0
+                speed = 4
+                whistle_num = 5
+                last_speak = False
+                last_speak_time = 0
 
         bell.clip_draw_to_origin(0, 0, 100, 100, 80, 30, 200, 200)
 
@@ -741,14 +800,17 @@ class Stage1:
         qwer.clip_draw((p_key - 1)*25, 0, 25, 25, 175, 260, 50, 50)
 
     def Correct_Check(self):
-        global key, p_key, frame, correct, check, last_speak
-        if check is False and m_intro == False:
+        global key, p_key, frame, correct, check, last_speak, progress
+        if check is False and m_intro == False and not last_speak:
             if progress == goal and p_key != 0: #마지막 구호
                 last_speak = True
+                progress += 1
+                print("-- AGAIN! --")
                 correct = False
                 self.Wrong()
             elif progress == goal + 1 and p_key != 0: #마지막 구호
                 last_speak = True
+                print("-- AGAIN! --")
                 correct = False
                 self.Wrong()
             elif frame == 1800 and key == p_key:  #OK

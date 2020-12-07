@@ -1,12 +1,12 @@
 from pico2d import *
 import gfw
 
-def init(p):
+def init(stage_num):
     global bg,time
     time = 0
-    if p is 1:
-        bg = gfw.image.load('res/BackGround.png')
 
+    # if stage is 1:
+    bg = gfw.image.load('res/stage1/BackGround.png')
 
 def draw():
     global time
