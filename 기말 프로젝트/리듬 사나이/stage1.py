@@ -22,7 +22,8 @@ class Stage1:
         self.intro_size = 250
 
         global whistle_num, progress, intro, practice, correct, time, key, goal, p_key, punishment, last_speak_time,\
-            me_shout_time, speed, check, shout_randidx, last_speak, ask_, m_intro, time_, answer_time, speed_check, last_speak_num
+            me_shout_time, speed, check, shout_randidx, last_speak, ask_, m_intro, time_, answer_time, speed_check, last_speak_num, \
+            b_무싸트,b_악1,b_악2,b_머발끝,b_개인주의,b_버섯이라고
         intro = True
         practice = True
         m_intro = False # False로 해놔야지 인트로 훈련에서도 타이밍 체크함
@@ -45,6 +46,12 @@ class Stage1:
         speed_check = False
         last_speak_time = 0
         last_speak_num = 0
+        b_무싸트 = False
+        b_악1 = False
+        b_악2 = False
+        b_머발끝 = False
+        b_개인주의 = False
+        b_버섯이라고 = False
 
         #대사 이미지
         global intro_player, intro_friend, intro_trainer, trainer_dem, intro_dialog, m_intro_dialog,\
@@ -113,6 +120,21 @@ class Stage1:
         BBick_p = load_wav('res/삑~(열외).wav')
         BBick_p.set_volume(40)
 
+        #보이스
+        global 퍽,무싸트,악,버섯,개인주의,반갈죽,인성,머발끝,버섯이라고,띨빵새
+        퍽 = load_wav('res/voice/퍽!.wav')
+        무싸트 = load_wav('res/voice/무싸트!.wav')
+        악 = load_wav('res/voice/악!.wav')
+        버섯 = load_wav('res/voice/버섯!.wav')
+        개인주의 = load_wav('res/voice/개인주의.wav')
+        반갈죽 = load_wav('res/voice/반갈죽.wav')
+        인성 = load_wav('res/voice/인성문제.wav')
+        머발끝 = load_wav('res/voice/머발끝.wav')
+        버섯이라고 = load_wav('res/voice/버섯이라고.wav')
+        띨빵새 = load_wav('res/voice/띨빵새.wav')
+
+        버섯.set_volume(20)
+
     def pause(self):
         main_music.pause()
 
@@ -133,6 +155,8 @@ class Stage1:
         global intro_music, main_music, punishment_music
         # 효과음
         global BBick1, BBick2, BBick_w, BBick_p
+        # 보이스
+        global 퍽, 무싸트, 악, 버섯, 개인주의, 반갈죽, 인성, 머발끝, 버섯이라고, 띨빵새
         del intro_player, intro_friend, intro_trainer, trainer_dem, intro_dialog, m_intro_dialog, \
             p_dialog, again_dialog, warnagain_dialog, comeback1_dialog, comeback2_dialog
         del pt, pt_sorry, pt_angry, trainer, whistle, shout, number, \
@@ -140,6 +164,8 @@ class Stage1:
             pushup_img, healthbar_red, healthbar_blue, lungs, sweet
         del intro_music, main_music, punishment_music
         del  BBick1, BBick2, BBick_w, BBick_p
+        del 퍽, 무싸트, 악, 버섯, 개인주의, 반갈죽, 인성, 머발끝, 버섯이라고, 띨빵새
+
         print('Stage1 deleted')
 
     def update(self):
@@ -179,6 +205,7 @@ class Stage1:
             print('-- Push up --')
             print("progress: ",progress,", ","goal: ",goal)
 
+            인성.play()
             main_music.stop()
             punishment_music.repeat_play()
 
@@ -228,7 +255,8 @@ class Stage1:
             goal, practice , me_shout_time, me_shout_randidx, check, last_speak, whistle_num, p_key, correct,\
             time_, m_intro, ask_, answer_time,\
             punishment, p_time, p_first_ignore, p_count, comeback, comeback_time,\
-            last_speak_time, last_speak_num
+            last_speak_time, last_speak_num, \
+            b_무싸트, b_악1, b_악2, b_머발끝, b_개인주의,b_버섯이라고
 
         #얼차려
         if punishment == True:
@@ -292,6 +320,9 @@ class Stage1:
                     trainer.clip_draw_to_origin(400, 0, 200, 200, 142, 100, 316, 316)
                     if self.health < 20:
                         p_dialog[3].clip_draw_to_origin(0, 0, 1371, 487, 350, 300, 430, 150)
+                        if not b_개인주의:
+                            개인주의.play()
+                            b_개인주의 = True
                     else:
                         p_dialog[2].clip_draw_to_origin(0, 0, 1371, 487, 350, 300, 430, 150)
                 elif p_frame == 200:  # 키 제시
@@ -383,6 +414,8 @@ class Stage1:
                 intro_player.clip_draw_to_origin(fidx*300, 0, 300, 200, 50, 235, 375, 250)
                 intro_friend.clip_draw_to_origin(fidx*300, 0, 300, 200, 50 + 150 * 2, 255, 375, 250)
                 self.intro_x += 1
+                if self.intro_x == -200:
+                    퍽.play()
             elif self.intro_y > 230: #조교 어깨빵
                 intro_trainer.clip_draw_to_origin(fidx*200, 0, 200, 200, self.intro_x, self.intro_y, self.intro_size,self.intro_size)
                 intro_player.clip_draw_to_origin(fidx*300, 0, 300, 200, 50, 235, 375, 250)
@@ -416,6 +449,9 @@ class Stage1:
                 intro_friend.clip_draw_to_origin(1200, 0, 300, 200, 50 + 150 * 2, 255, 375, 250)
                 intro_trainer.clip_draw_to_origin(800, 0, 200, 200, 142, 100, 316, 316)
             elif time > 1.5 and time < 22.5: #조교 설명
+                if int(time) == 2 and not b_무싸트:
+                    무싸트.play()
+                    b_무싸트 = True
                 intro_player.clip_draw_to_origin(1200, 0, 300, 200, 50, 235, 375, 250)
                 intro_friend.clip_draw_to_origin(1200, 0, 300, 200, 50 + 150 * 2, 255, 375, 250)
                 indx = time - 1.5
@@ -430,6 +466,9 @@ class Stage1:
                     pt.clip_draw_to_origin(0, 1800, 200, 200, 50 + 132, 235, 250, 250)
                     pt.clip_draw_to_origin(0, 1800, 200, 200, 50 + 300, 255, 250, 250)
                     pt.clip_draw_to_origin(0, 1800, 200, 200, 50 + 300 + 132, 255, 250, 250)
+                    if not b_악1:
+                        악.play()
+                        b_악1 = True
                 elif indx >= 5: #답변후 훈련생 표정 진지
                     pt.clip_draw_to_origin(0, 1000, 200, 200, 50, 235, 250, 250)
                     pt.clip_draw_to_origin(0, 1000, 200, 200, 50 + 132, 235, 250, 250)
@@ -566,6 +605,10 @@ class Stage1:
                     pt_angry.clip_draw_to_origin(0, 1000, 200, 200, 50 + 300, 255, 250, 250)
                     pt_angry.clip_draw_to_origin(0, 1000, 200, 200, 50 + 300 + 132, 255, 250, 250)
 
+                    if not b_버섯이라고 and get_time() - time_ > 2:
+                        버섯이라고.play()
+                        b_버섯이라고 = True
+
                     trainer.clip_draw_to_origin(400, 0, 200, 200, 142, 100, 316, 316)
                     m_intro_dialog[0].clip_draw_to_origin(0, 0, 1371, 487, 350, 300, 430, 150)
                 else:   #칭찬
@@ -603,6 +646,10 @@ class Stage1:
                 pt.clip_draw_to_origin(0, 1800, 200, 200, 50 + 300, 255, 250, 250)
                 pt.clip_draw_to_origin(0, 1800, 200, 200, 50 + 300 + 132, 255, 250, 250)
 
+                if not b_악2:
+                    악.play()
+                    b_악2 = True
+
                 intro_trainer.clip_draw_to_origin(800 + 200 * fidx_, 0, 200, 200, 142, 100, 316, 316)
                 m_intro_dialog[3].clip_draw_to_origin(0, 0, 1371, 487, 350, 300, 430, 150)
             elif get_time() - answer_time < 6:
@@ -610,7 +657,9 @@ class Stage1:
                 pt.clip_draw_to_origin(0, 1000, 200, 200, 50 + 132, 235, 250, 250)
                 pt.clip_draw_to_origin(0, 1000, 200, 200, 50 + 300, 255, 250, 250)
                 pt.clip_draw_to_origin(0, 1000, 200, 200, 50 + 300 + 132, 255, 250, 250)
-
+                if not b_머발끝:
+                    머발끝.play()
+                    b_머발끝 = True
                 intro_trainer.clip_draw_to_origin(800 + 200 * fidx_, 0, 200, 200, 142, 100, 316, 316)
                 m_intro_dialog[4].clip_draw_to_origin(0, 0, 1371, 487, 350, 300, 430, 150)
             else: #중간 인트로 끝 -> 시간 초기화
@@ -672,6 +721,10 @@ class Stage1:
                 last_speak_time = get_time()
                 main_music.stop()
                 punishment_music.play()
+                if last_speak_num != 2:
+                    반갈죽.play()
+                else:
+                    띨빵새.play()
             elif get_time() - last_speak_time < 5 and last_speak_num != 3:
                 pt_sorry.clip_draw_to_origin(0, 1000, 200, 200, 50, 235, 250, 250)
 
@@ -680,6 +733,7 @@ class Stage1:
                 pt_angry.clip_draw_to_origin(0, 1000, 200, 200, 50 + 300 + 132, 255, 250, 250)
 
                 trainer.clip_draw_to_origin(400, 0, 200, 200, 142, 100, 316, 316)
+
                 if last_speak_num == 0:
                     warnagain_dialog[0].clip_draw_to_origin(0, 0, 1371, 487, 350, 300, 430, 150)
                 elif last_speak_num == 1:
@@ -806,11 +860,13 @@ class Stage1:
                 last_speak = True
                 progress += 1
                 print("-- AGAIN! --")
+                버섯.play()
                 correct = False
                 self.Wrong()
             elif progress == goal + 1 and p_key != 0: #마지막 구호
                 last_speak = True
                 print("-- AGAIN! --")
+                버섯.play()
                 correct = False
                 self.Wrong()
             elif frame == 1800 and key == p_key:  #OK
@@ -861,45 +917,51 @@ class Stage1:
     def handle_event(self,e):
         global answer, ask, p_key, me_shout_time, me_shout_randidx, frame, answer_time
         if e.type == SDL_KEYDOWN:
-            if e.key == SDLK_q and frame != 1600: #프레임이 1600일때는 키보드 입력 안됨
-                p_key = 1
-                me_shout_randidx = random.randint(0, 2)
-                if punishment == True:
-                    self.P_Correct_Check()
-                else:
-                    self.Correct_Check()
-                me_shout_time = get_time()
-            elif e.key == SDLK_w and frame != 1600: #프레임이 1600일때는 키보드 입력 안됨
-                p_key = 2
-                me_shout_randidx = random.randint(0, 2)
-                if punishment == True:
-                    self.P_Correct_Check()
-                else:
-                    self.Correct_Check()
-                me_shout_time = get_time()
-            elif e.key == SDLK_e and frame != 1600: #프레임이 1600일때는 키보드 입력 안됨
-                p_key = 3
-                me_shout_randidx = random.randint(0, 2)
-                if punishment == True:
-                    self.P_Correct_Check()
-                else:
-                    self.Correct_Check()
-                me_shout_time = get_time()
-            elif e.key == SDLK_r and frame != 1600: #프레임이 1600일때는 키보드 입력 안됨
-                p_key = 4
-                me_shout_randidx = random.randint(0, 2)
-                if punishment == True:
-                    self.P_Correct_Check()
-                else:
-                    self.Correct_Check()
-                me_shout_time = get_time()
+            if not intro:
+                if e.key == SDLK_q and frame != 1600: #프레임이 1600일때는 키보드 입력 안됨
+                    p_key = 1
+                    me_shout_randidx = random.randint(0, 2)
+                    if punishment == True:
+                        self.P_Correct_Check()
+                    else:
+                        self.Correct_Check()
+                    me_shout_time = get_time()
+                elif e.key == SDLK_w and frame != 1600: #프레임이 1600일때는 키보드 입력 안됨
+                    p_key = 2
+                    me_shout_randidx = random.randint(0, 2)
+                    if punishment == True:
+                        self.P_Correct_Check()
+                    else:
+                        self.Correct_Check()
+                    me_shout_time = get_time()
+                elif e.key == SDLK_e and frame != 1600: #프레임이 1600일때는 키보드 입력 안됨
+                    p_key = 3
+                    me_shout_randidx = random.randint(0, 2)
+                    if punishment == True:
+                        self.P_Correct_Check()
+                    else:
+                        self.Correct_Check()
+                    me_shout_time = get_time()
+                elif e.key == SDLK_r and frame != 1600: #프레임이 1600일때는 키보드 입력 안됨
+                    p_key = 4
+                    me_shout_randidx = random.randint(0, 2)
+                    if punishment == True:
+                        self.P_Correct_Check()
+                    else:
+                        self.Correct_Check()
+                    me_shout_time = get_time()
+                elif e.key == SDLK_RETURN:
+                    if ask_ == True:
+                        answer_time = get_time()
+                # elif e.key == SDLK_m:
+                #     self.health -= 5
+                # elif e.key == SDLK_n:
+                #     self.health += 5
             elif e.key == SDLK_RETURN:
                 if ask == True:
                     answer = True
-                if ask_ == True:
-                    answer_time = get_time()
-            elif e.key == SDLK_m:
-                self.health -= 5
-            elif e.key == SDLK_n:
-                self.health += 5
+            # elif e.key == SDLK_m:
+            #     self.health -= 5
+            # elif e.key == SDLK_n:
+            #     self.health += 5
 
