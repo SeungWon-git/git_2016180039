@@ -155,7 +155,7 @@ class Stage1:
             key = -1
             speed_check = False
 
-        #얼차려
+        #얼차려시작
         if whistle_num == 0 and punishment == False:
             BBick_p.play()
             punishment = True
@@ -163,6 +163,7 @@ class Stage1:
             p_count = 0
             p_first_ignore = True
             print('-- Push up --')
+            print("progress: ",progress,", ","goal: ",goal)
 
             main_music.stop()
             punishment_music.repeat_play()
@@ -190,7 +191,7 @@ class Stage1:
                 self.P_Correct_Check()  # 너무 늦게 클릭 확인
 
         # 종료 -> 초기화
-        if progress == goal + 1:
+        if progress == goal + 1 and not punishment:
             if last_speak == True and intro == False and practice == False: #마지막 구호 말했을때
                 if goal < 20:
                     goal += 5   #처음부터 +5만큼 다시하기
@@ -225,9 +226,9 @@ class Stage1:
 
     def draw(self):
         global intro, time, frame, count1, count2, count_up, answer ,ask, key, last_time, progress, speed,\
-            goal, practice , me_shout_time, me_shout_randidx, check, last_speak, whistle_num,\
+            goal, practice , me_shout_time, me_shout_randidx, check, last_speak, whistle_num, p_key, correct,\
             time_, m_intro, ask_, answer_time,\
-            punishment, p_time, p_first_ignore, p_count
+            punishment, p_time, p_first_ignore, p_count, comeback, comeback_time
 
         #얼차려
         if punishment == True:
@@ -302,7 +303,10 @@ class Stage1:
                 lungs.clip_draw(l_frame * 100, 0, 100, 100, 465, 50, 60, 60)
 
                 life_gauge.draw(645, 50, 300, self.health / 100)
+            #필요값설정
             elif p_count == 20:
+                punishment_music.stop()
+
                 me.clip_draw_to_origin(0, 0, 100, 100, 150, 380, 50, 50)
                 pushup_img.clip_draw_to_origin(0, 600, 200, 200, 50, 200, 250, 250)
                 pushup_img.clip_draw_to_origin(0, 600, 200, 200, 50 + 132, 200, 250, 250)
@@ -319,8 +323,56 @@ class Stage1:
                 shout.clip_draw_to_origin(shout_randidx * 40, 0, 40, 40, 330, 400, 130, 130)
                 number.clip_draw_to_origin((p_count // 10 - 1) * 25 + 9 * 25, 0, 25, 25, 370, 440, 50, 50)
                 p_count += 1
-            else:   #얼차려 끝 초기화
-                pass
+                comeback = random.randint(1,2)
+                comeback_time = get_time()
+                if goal - progress < 5:
+                    goal = 5
+                elif goal - progress < 10:
+                    goal = 10
+                elif goal - progress < 15:
+                    goal = 15
+                elif goal - progress < 20:
+                    goal = 20
+            else:   #얼차려 끝
+                # 다시 시작 대사 중
+                if get_time() - comeback_time < 5:
+                    intro_player.clip_draw_to_origin(1200, 0, 300, 200, 50, 235, 375, 250)
+                    intro_friend.clip_draw_to_origin(1200, 0, 300, 200, 50 + 150 * 2, 255, 375, 250)
+
+                    intro_trainer.clip_draw_to_origin(800 + l_frame*200, 0, 200, 200, 142, 100, 316, 316)
+                    if comeback == 1:
+                        if goal == 5:
+                            comeback1_dialog[0].clip_draw_to_origin(0, 0, 1371, 487, 350, 300, 430, 150)
+                        elif goal == 10:
+                            comeback1_dialog[1].clip_draw_to_origin(0, 0, 1371, 487, 350, 300, 430, 150)
+                        elif goal == 15:
+                            comeback1_dialog[2].clip_draw_to_origin(0, 0, 1371, 487, 350, 300, 430, 150)
+                        elif goal == 20:
+                            comeback1_dialog[3].clip_draw_to_origin(0, 0, 1371, 487, 350, 300, 430, 150)
+                    elif comeback == 2:
+                        if goal == 5:
+                            comeback2_dialog[0].clip_draw_to_origin(0, 0, 1371, 487, 350, 300, 430, 150)
+                        elif goal == 10:
+                            comeback2_dialog[1].clip_draw_to_origin(0, 0, 1371, 487, 350, 300, 430, 150)
+                        elif goal == 15:
+                            comeback2_dialog[2].clip_draw_to_origin(0, 0, 1371, 487, 350, 300, 430, 150)
+                        elif goal == 20:
+                            comeback2_dialog[3].clip_draw_to_origin(0, 0, 1371, 487, 350, 300, 430, 150)
+                # 초기화 -> 끝
+                else:
+                    main_music.repeat_play()
+                    check = False
+                    correct = True
+                    count1 = 0
+                    count2 = 0
+                    p_key = 0
+                    key = -1
+                    time = 0
+                    progress = 0
+                    whistle_num = 3
+                    punishment = False
+                    last_speak = False
+                    speed = 4
 
 
         #intro
